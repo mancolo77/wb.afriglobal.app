@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../services/local_notification_service.dart';
 import '../theme/app_theme.dart';
 import 'tabs/calendar_tab.dart';
 import 'tabs/journal_tab.dart';
@@ -27,10 +26,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      LocalNotificationService.instance.requestPermission();
-    });
   }
 
   @override
@@ -64,17 +59,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.book_outlined),
               activeIcon: Icon(Icons.menu_book_rounded),
-              label: 'Мой журнал',
+              label: 'My Journal',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today_outlined),
               activeIcon: Icon(Icons.calendar_today_rounded),
-              label: 'Календарь',
+              label: 'Calendar',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart_outlined),
               activeIcon: Icon(Icons.bar_chart_rounded),
-              label: 'Статистика',
+              label: 'Statistics',
             ),
           ],
         ),

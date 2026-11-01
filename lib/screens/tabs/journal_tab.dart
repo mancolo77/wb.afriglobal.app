@@ -12,8 +12,8 @@ class JournalTab extends StatefulWidget {
 class _JournalTabState extends State<JournalTab> {
   final _service = MatchJournalService();
   String _searchQuery = '';
-  String _selectedSport = 'Все';
-  final List<String> _sports = ['Все', 'Футбол', 'Хоккей', 'Баскетбол', 'Теннис', 'Волейбол'];
+  String _selectedSport = 'All';
+  final List<String> _sports = ['All', 'Football', 'Hockey', 'Basketball', 'Tennis', 'Volleyball'];
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _JournalTabState extends State<JournalTab> {
 
   void _showAddEditDialog([MatchEntry? existing]) {
     final isEditing = existing != null;
-    String sport = existing?.sport ?? 'Футбол';
+    String sport = existing?.sport ?? 'Football';
     final participantsCtrl = TextEditingController(text: existing?.participants ?? '');
     final dateCtrl = TextEditingController(
       text: existing?.date ?? DateTime.now().toIso8601String().substring(0, 10),
@@ -74,7 +74,7 @@ class _JournalTabState extends State<JournalTab> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  isEditing ? 'Редактировать событие' : 'Новое посещение',
+                  isEditing ? 'Edit Match Attendance' : 'New Match Attendance',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -83,9 +83,9 @@ class _JournalTabState extends State<JournalTab> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: sport,
+                  initialValue: sport,
                   decoration: InputDecoration(
-                    labelText: 'Вид спорта',
+                    labelText: 'Sport',
                     labelStyle: const TextStyle(color: AppTheme.textSecondary),
                     filled: true,
                     fillColor: AppTheme.surfaceSecondary,
@@ -94,7 +94,7 @@ class _JournalTabState extends State<JournalTab> {
                       borderSide: const BorderSide(color: AppTheme.border),
                     ),
                   ),
-                  items: ['Футбол', 'Хоккей', 'Баскетбол', 'Теннис', 'Волейбол']
+                  items: ['Football', 'Hockey', 'Basketball', 'Tennis', 'Volleyball']
                       .map((s) => DropdownMenuItem(value: s, child: Text(s)))
                       .toList(),
                   onChanged: (v) {
@@ -105,7 +105,7 @@ class _JournalTabState extends State<JournalTab> {
                 TextField(
                   controller: participantsCtrl,
                   decoration: InputDecoration(
-                    labelText: 'Участники / команды (напр. Спартак — Зенит)',
+                    labelText: 'Teams / Participants (e.g. Arsenal vs Chelsea)',
                     labelStyle: const TextStyle(color: AppTheme.textSecondary),
                     filled: true,
                     fillColor: AppTheme.surfaceSecondary,
@@ -122,7 +122,7 @@ class _JournalTabState extends State<JournalTab> {
                       child: TextField(
                         controller: dateCtrl,
                         decoration: InputDecoration(
-                          labelText: 'Дата (ГГГГ-ММ-ДД)',
+                          labelText: 'Date (YYYY-MM-DD)',
                           labelStyle: const TextStyle(color: AppTheme.textSecondary),
                           filled: true,
                           fillColor: AppTheme.surfaceSecondary,
@@ -138,7 +138,7 @@ class _JournalTabState extends State<JournalTab> {
                       child: TextField(
                         controller: scoreCtrl,
                         decoration: InputDecoration(
-                          labelText: 'Счёт (необязательно)',
+                          labelText: 'Score (optional)',
                           labelStyle: const TextStyle(color: AppTheme.textSecondary),
                           filled: true,
                           fillColor: AppTheme.surfaceSecondary,
@@ -155,7 +155,7 @@ class _JournalTabState extends State<JournalTab> {
                 TextField(
                   controller: placeCtrl,
                   decoration: InputDecoration(
-                    labelText: 'Место / стадион / арена',
+                    labelText: 'Venue / Stadium / Arena',
                     labelStyle: const TextStyle(color: AppTheme.textSecondary),
                     filled: true,
                     fillColor: AppTheme.surfaceSecondary,
@@ -170,7 +170,7 @@ class _JournalTabState extends State<JournalTab> {
                   controller: notesCtrl,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    labelText: 'Заметки и впечатления',
+                    labelText: 'Notes & Impressions',
                     labelStyle: const TextStyle(color: AppTheme.textSecondary),
                     filled: true,
                     fillColor: AppTheme.surfaceSecondary,
@@ -224,7 +224,7 @@ class _JournalTabState extends State<JournalTab> {
                       Navigator.pop(ctx);
                     },
                     child: Text(
-                      isEditing ? 'Сохранить изменения' : 'Добавить в журнал',
+                      isEditing ? 'Save Changes' : 'Add to Journal',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -248,17 +248,17 @@ class _JournalTabState extends State<JournalTab> {
         backgroundColor: AppTheme.surfaceCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.cardRadius)),
         title: const Text(
-          'Удалить запись?',
+          'Delete Entry?',
           style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.textMain),
         ),
         content: Text(
-          'Запись о матче «${entry.participants}» будет безвозвратно удалена из журнала.',
+          'Match record for "${entry.participants}" will be permanently deleted.',
           style: const TextStyle(color: AppTheme.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Отмена', style: TextStyle(color: AppTheme.textSecondary)),
+            child: const Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -269,7 +269,7 @@ class _JournalTabState extends State<JournalTab> {
               Navigator.pop(ctx);
               _service.deleteEntry(entry.id);
             },
-            child: const Text('Удалить', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text('Delete', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -278,15 +278,15 @@ class _JournalTabState extends State<JournalTab> {
 
   IconData _iconForSport(String sport) {
     switch (sport) {
-      case 'Хоккей':
+      case 'Hockey':
         return Icons.sports_hockey_rounded;
-      case 'Баскетбол':
+      case 'Basketball':
         return Icons.sports_basketball_rounded;
-      case 'Теннис':
+      case 'Tennis':
         return Icons.sports_tennis_rounded;
-      case 'Волейбол':
+      case 'Volleyball':
         return Icons.sports_volleyball_rounded;
-      case 'Футбол':
+      case 'Football':
       default:
         return Icons.sports_soccer_rounded;
     }
@@ -296,7 +296,7 @@ class _JournalTabState extends State<JournalTab> {
   Widget build(BuildContext context) {
     final attended = _service.attendedEntries;
     final filtered = attended.where((e) {
-      final matchesSport = _selectedSport == 'Все' || e.sport == _selectedSport;
+      final matchesSport = _selectedSport == 'All' || e.sport == _selectedSport;
       final matchesSearch = _searchQuery.isEmpty ||
           e.participants.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           e.place.toLowerCase().contains(_searchQuery.toLowerCase());
@@ -318,7 +318,7 @@ class _JournalTabState extends State<JournalTab> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Мой журнал',
+                          'My Journal',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -329,7 +329,7 @@ class _JournalTabState extends State<JournalTab> {
                         ),
                         SizedBox(height: 2),
                         Text(
-                          'История посещённых матчей и арены',
+                          'History of visited matches and arenas',
                           style: TextStyle(
                             fontSize: 13,
                             color: AppTheme.textSecondary,
@@ -355,7 +355,7 @@ class _JournalTabState extends State<JournalTab> {
                     onPressed: () => _showAddEditDialog(),
                     icon: const Icon(Icons.add, size: 18),
                     label: const Text(
-                      'Добавить',
+                      'Add',
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                   ),
@@ -363,7 +363,7 @@ class _JournalTabState extends State<JournalTab> {
               ),
             ),
 
-            // Зелёный баннер с количеством посещённых событий и жёлтым акцентом
+            // Green banner with attended events count and yellow accent
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Container(
@@ -399,7 +399,7 @@ class _JournalTabState extends State<JournalTab> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'ВСЕГО ПОСЕЩЕНО',
+                            'TOTAL ATTENDED',
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
@@ -421,7 +421,7 @@ class _JournalTabState extends State<JournalTab> {
                               const SizedBox(width: 6),
                               const Flexible(
                                 child: Text(
-                                  'спортивных событий',
+                                  'sports events',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.white,
@@ -447,7 +447,7 @@ class _JournalTabState extends State<JournalTab> {
               child: TextField(
                 onChanged: (val) => setState(() => _searchQuery = val),
                 decoration: InputDecoration(
-                  hintText: 'Поиск по участникам или стадиону...',
+                  hintText: 'Search by teams or stadium...',
                   hintStyle: const TextStyle(fontSize: 13, color: AppTheme.textSecondary),
                   prefixIcon: const Icon(Icons.search, size: 20, color: AppTheme.textSecondary),
                   filled: true,
@@ -510,12 +510,12 @@ class _JournalTabState extends State<JournalTab> {
                           Icon(Icons.event_note_outlined, size: 56, color: AppTheme.textSecondary.withAlpha(120)),
                           const SizedBox(height: 10),
                           const Text(
-                            'В журнале пока нет записей',
+                            'No entries in journal yet',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.textMain),
                           ),
                           const SizedBox(height: 4),
                           const Text(
-                            'Добавьте матч, который вы посетили',
+                            'Add a match that you attended',
                             style: TextStyle(fontSize: 13, color: AppTheme.textSecondary),
                           ),
                         ],
@@ -596,11 +596,11 @@ class _JournalTabState extends State<JournalTab> {
                                       itemBuilder: (ctx) => [
                                         const PopupMenuItem(
                                           value: 'edit',
-                                          child: Text('Редактировать'),
+                                          child: Text('Edit'),
                                         ),
                                         const PopupMenuItem(
                                           value: 'delete',
-                                          child: Text('Удалить', style: TextStyle(color: Colors.red)),
+                                          child: Text('Delete', style: TextStyle(color: Colors.red)),
                                         ),
                                       ],
                                     ),
@@ -615,7 +615,7 @@ class _JournalTabState extends State<JournalTab> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      'Итоговый счёт: ${entry.score}',
+                                      'Final score: ${entry.score}',
                                       style: const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
@@ -650,7 +650,7 @@ class _JournalTabState extends State<JournalTab> {
                                           Icon(Icons.check_circle_rounded, size: 14, color: AppTheme.primary),
                                           SizedBox(width: 4),
                                           Text(
-                                            'Посещено',
+                                            'Attended',
                                             style: TextStyle(
                                               fontSize: 11,
                                               fontWeight: FontWeight.bold,

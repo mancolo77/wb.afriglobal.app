@@ -38,7 +38,7 @@ class StatsTab extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Статистика',
+                    'Statistics',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class StatsTab extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   const Text(
-                    'Личные рекорды посещений и любимые события',
+                    'Personal attendance records and favorite events',
                     style: TextStyle(fontSize: 13, color: AppTheme.textSecondary),
                   ),
                   const SizedBox(height: 18),
@@ -57,7 +57,7 @@ class StatsTab extends StatelessWidget {
                     children: [
                       Expanded(
                         child: _buildStatCard(
-                          title: 'За месяц',
+                          title: 'This Month',
                           value: '$monthCount',
                           highlight: true,
                         ),
@@ -65,7 +65,7 @@ class StatsTab extends StatelessWidget {
                       const SizedBox(width: 10),
                       Expanded(
                         child: _buildStatCard(
-                          title: 'За год',
+                          title: 'This Year',
                           value: '$yearCount',
                           highlight: false,
                         ),
@@ -73,7 +73,7 @@ class StatsTab extends StatelessWidget {
                       const SizedBox(width: 10),
                       Expanded(
                         child: _buildStatCard(
-                          title: 'За всё время',
+                          title: 'All Time',
                           value: '$totalCount',
                           highlight: false,
                         ),
@@ -84,7 +84,7 @@ class StatsTab extends StatelessWidget {
 
                   // Distribution by sport
                   const Text(
-                    'Распределение по видам спорта',
+                    'Distribution by Sport',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -103,7 +103,7 @@ class StatsTab extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          'Нет данных для аналитики.\nОтметьте первое посещение в журнале.',
+                          'No analytics data yet.\nLog your first match attendance in the journal.',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
                         ),
@@ -170,7 +170,7 @@ class StatsTab extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Любимые события',
+                        'Favorite Events',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -178,7 +178,7 @@ class StatsTab extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${favorites.length} в списке',
+                        '${favorites.length} in list',
                         style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary),
                       ),
                     ],
@@ -195,7 +195,7 @@ class StatsTab extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          'Нажмите на звезду в карточке матча,\nчтобы добавить его в избранное.',
+                          'Tap the star on any match card\nto add it to favorites.',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
                         ),
@@ -314,4 +314,3 @@ class StatsTab extends StatelessWidget {
     );
   }
 }
-

@@ -11,7 +11,7 @@ class CalendarTab extends StatefulWidget {
 
 class _CalendarTabState extends State<CalendarTab> {
   final _service = MatchJournalService();
-  String _filterStatus = 'Все';
+  String _filterStatus = 'All';
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _CalendarTabState extends State<CalendarTab> {
   }
 
   void _showAddPlannedDialog() {
-    String sport = 'Футбол';
+    String sport = 'Football';
     final participantsCtrl = TextEditingController();
     final dateCtrl = TextEditingController(
       text: DateTime.now().add(const Duration(days: 3)).toIso8601String().substring(0, 10),
@@ -70,7 +70,7 @@ class _CalendarTabState extends State<CalendarTab> {
                 ),
                 const SizedBox(height: 12),
                 const Text(
-                  'Запланировать посещение',
+                  'Schedule Match Visit',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -79,9 +79,9 @@ class _CalendarTabState extends State<CalendarTab> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: sport,
+                  initialValue: sport,
                   decoration: InputDecoration(
-                    labelText: 'Вид спорта',
+                    labelText: 'Sport',
                     labelStyle: const TextStyle(color: AppTheme.textSecondary),
                     filled: true,
                     fillColor: AppTheme.surfaceSecondary,
@@ -90,7 +90,7 @@ class _CalendarTabState extends State<CalendarTab> {
                       borderSide: const BorderSide(color: AppTheme.border),
                     ),
                   ),
-                  items: ['Футбол', 'Хоккей', 'Баскетбол', 'Теннис', 'Волейбол']
+                  items: ['Football', 'Hockey', 'Basketball', 'Tennis', 'Volleyball']
                       .map((s) => DropdownMenuItem(value: s, child: Text(s)))
                       .toList(),
                   onChanged: (v) {
@@ -101,7 +101,7 @@ class _CalendarTabState extends State<CalendarTab> {
                 TextField(
                   controller: participantsCtrl,
                   decoration: InputDecoration(
-                    labelText: 'Матч / Событие',
+                    labelText: 'Match / Event',
                     labelStyle: const TextStyle(color: AppTheme.textSecondary),
                     filled: true,
                     fillColor: AppTheme.surfaceSecondary,
@@ -115,7 +115,7 @@ class _CalendarTabState extends State<CalendarTab> {
                 TextField(
                   controller: dateCtrl,
                   decoration: InputDecoration(
-                    labelText: 'Дата посещения (ГГГГ-ММ-ДД)',
+                    labelText: 'Date of Visit (YYYY-MM-DD)',
                     labelStyle: const TextStyle(color: AppTheme.textSecondary),
                     filled: true,
                     fillColor: AppTheme.surfaceSecondary,
@@ -129,7 +129,7 @@ class _CalendarTabState extends State<CalendarTab> {
                 TextField(
                   controller: placeCtrl,
                   decoration: InputDecoration(
-                    labelText: 'Стадион / Арена / Место',
+                    labelText: 'Stadium / Arena / Venue',
                     labelStyle: const TextStyle(color: AppTheme.textSecondary),
                     filled: true,
                     fillColor: AppTheme.surfaceSecondary,
@@ -144,7 +144,7 @@ class _CalendarTabState extends State<CalendarTab> {
                   controller: notesCtrl,
                   maxLines: 2,
                   decoration: InputDecoration(
-                    labelText: 'Заметки (сектор, ряд, билеты)',
+                    labelText: 'Notes (seat, row, ticket details)',
                     labelStyle: const TextStyle(color: AppTheme.textSecondary),
                     filled: true,
                     fillColor: AppTheme.surfaceSecondary,
@@ -185,7 +185,7 @@ class _CalendarTabState extends State<CalendarTab> {
                       Navigator.pop(ctx);
                     },
                     child: const Text(
-                      'Запланировать',
+                      'Schedule',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -209,8 +209,8 @@ class _CalendarTabState extends State<CalendarTab> {
       ..sort((a, b) => b.date.compareTo(a.date));
 
     final filtered = sorted.where((e) {
-      if (_filterStatus == 'Запланировано') return !e.isAttended;
-      if (_filterStatus == 'Посещено') return e.isAttended;
+      if (_filterStatus == 'Scheduled') return !e.isAttended;
+      if (_filterStatus == 'Attended') return e.isAttended;
       return true;
     }).toList();
 
@@ -228,7 +228,7 @@ class _CalendarTabState extends State<CalendarTab> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Календарь',
+                          'Calendar',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -239,7 +239,7 @@ class _CalendarTabState extends State<CalendarTab> {
                         ),
                         SizedBox(height: 2),
                         Text(
-                          'Планы посещений и архив по датам',
+                          'Upcoming visits and archive by date',
                           style: TextStyle(
                             fontSize: 13,
                             color: AppTheme.textSecondary,
@@ -265,7 +265,7 @@ class _CalendarTabState extends State<CalendarTab> {
                     onPressed: _showAddPlannedDialog,
                     icon: const Icon(Icons.add_alarm_rounded, size: 18),
                     label: const Text(
-                      'Запланировать',
+                      'Schedule',
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                   ),
@@ -279,34 +279,34 @@ class _CalendarTabState extends State<CalendarTab> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: ['Все', 'Запланировано', 'Посещено'].map((status) {
-                  final isSelected = _filterStatus == status;
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: InkWell(
-                      onTap: () => setState(() => _filterStatus = status),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: isSelected ? AppTheme.darkNav : AppTheme.surfaceSecondary,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: isSelected ? AppTheme.darkNav : AppTheme.border,
+                  children: ['All', 'Scheduled', 'Attended'].map((status) {
+                    final isSelected = _filterStatus == status;
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: InkWell(
+                        onTap: () => setState(() => _filterStatus = status),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: isSelected ? AppTheme.darkNav : AppTheme.surfaceSecondary,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: isSelected ? AppTheme.darkNav : AppTheme.border,
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          status,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                            color: isSelected ? Colors.white : AppTheme.textMain,
+                          child: Text(
+                            status,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                              color: isSelected ? Colors.white : AppTheme.textMain,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
                 ),
               ),
             ),
@@ -322,12 +322,12 @@ class _CalendarTabState extends State<CalendarTab> {
                           Icon(Icons.calendar_month_outlined, size: 56, color: AppTheme.textSecondary.withAlpha(120)),
                           const SizedBox(height: 10),
                           const Text(
-                            'События не найдены',
+                            'No events found',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.textMain),
                           ),
                           const SizedBox(height: 4),
                           const Text(
-                            'Запланируйте поход на матч в ближайшие дни',
+                            'Schedule a stadium visit in the upcoming days',
                             style: TextStyle(fontSize: 13, color: AppTheme.textSecondary),
                           ),
                         ],
@@ -379,7 +379,7 @@ class _CalendarTabState extends State<CalendarTab> {
                                           ),
                                           const SizedBox(width: 4),
                                           Text(
-                                            isAttended ? 'Посещено' : 'Запланировано',
+                                            isAttended ? 'Attended' : 'Scheduled',
                                             style: TextStyle(
                                               fontSize: 11,
                                               fontWeight: FontWeight.bold,
@@ -436,7 +436,7 @@ class _CalendarTabState extends State<CalendarTab> {
                                         ),
                                         onPressed: () => _service.toggleAttended(item.id),
                                         icon: const Icon(Icons.check, size: 16),
-                                        label: const Text('Отметить как посещено'),
+                                        label: const Text('Mark as Attended'),
                                       )
                                     else
                                       OutlinedButton.icon(
@@ -450,7 +450,7 @@ class _CalendarTabState extends State<CalendarTab> {
                                         ),
                                         onPressed: () => _service.toggleAttended(item.id),
                                         icon: const Icon(Icons.undo_rounded, size: 16),
-                                        label: const Text('Снять отметку'),
+                                        label: const Text('Remove Mark'),
                                       ),
                                   ],
                                 ),
@@ -467,4 +467,3 @@ class _CalendarTabState extends State<CalendarTab> {
     );
   }
 }
-
