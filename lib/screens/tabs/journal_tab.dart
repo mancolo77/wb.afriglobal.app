@@ -33,7 +33,11 @@ class _JournalTabState extends State<JournalTab> {
 
   void _showAddEditDialog([MatchEntry? existing]) {
     final isEditing = existing != null;
-    String sport = existing?.sport ?? 'Football';
+    final availableSports = ['Football', 'Hockey', 'Basketball', 'Tennis', 'Volleyball'];
+    String sport = MatchJournalService.normalizeSport(existing?.sport ?? 'Football');
+    if (!availableSports.contains(sport)) {
+      sport = 'Football';
+    }
     final participantsCtrl = TextEditingController(text: existing?.participants ?? '');
     final dateCtrl = TextEditingController(
       text: existing?.date ?? DateTime.now().toIso8601String().substring(0, 10),
@@ -277,7 +281,7 @@ class _JournalTabState extends State<JournalTab> {
   }
 
   IconData _iconForSport(String sport) {
-    switch (sport) {
+    switch (MatchJournalService.normalizeSport(sport)) {
       case 'Hockey':
         return Icons.sports_hockey_rounded;
       case 'Basketball':
@@ -296,7 +300,7 @@ class _JournalTabState extends State<JournalTab> {
   Widget build(BuildContext context) {
     final attended = _service.attendedEntries;
     final filtered = attended.where((e) {
-      final matchesSport = _selectedSport == 'All' || e.sport == _selectedSport;
+      final matchesSport = _selectedSport == 'All' || MatchJournalService.normalizeSport(e.sport) == _selectedSport;
       final matchesSearch = _searchQuery.isEmpty ||
           e.participants.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           e.place.toLowerCase().contains(_searchQuery.toLowerCase());
@@ -568,7 +572,7 @@ class _JournalTabState extends State<JournalTab> {
                                           ),
                                           const SizedBox(height: 2),
                                           Text(
-                                            '${entry.sport} • ${entry.date} • ${entry.place}',
+                                            '${MatchJournalService.normalizeSport(entry.sport)} • ${entry.date} • ${entry.place}',
                                             style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                                           ),
                                         ],

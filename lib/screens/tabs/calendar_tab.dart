@@ -410,7 +410,7 @@ class _CalendarTabState extends State<CalendarTab> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  '${item.sport} • ${item.place}',
+                                  '${MatchJournalService.normalizeSport(item.sport)} • ${item.place}',
                                   style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary),
                                 ),
                                 if (item.notes.isNotEmpty) ...[

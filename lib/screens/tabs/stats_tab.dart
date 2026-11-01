@@ -26,7 +26,8 @@ class StatsTab extends StatelessWidget {
         // Group by sport
         final Map<String, int> sportCounts = {};
         for (var e in attended) {
-          sportCounts[e.sport] = (sportCounts[e.sport] ?? 0) + 1;
+          final norm = MatchJournalService.normalizeSport(e.sport);
+          sportCounts[norm] = (sportCounts[norm] ?? 0) + 1;
         }
 
         return Scaffold(
@@ -240,7 +241,7 @@ class StatsTab extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      '${fav.sport} • ${fav.date} • ${fav.place}',
+                                      '${MatchJournalService.normalizeSport(fav.sport)} • ${fav.date} • ${fav.place}',
                                       style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                                     ),
                                   ],

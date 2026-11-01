@@ -62,7 +62,7 @@ class MatchEntry {
 
   factory MatchEntry.fromJson(Map<String, dynamic> json) => MatchEntry(
         id: json['id'] as String,
-        sport: json['sport'] as String? ?? 'Football',
+        sport: MatchJournalService.normalizeSport(json['sport'] as String? ?? 'Football'),
         participants: json['participants'] as String? ?? '',
         date: json['date'] as String? ?? '',
         place: json['place'] as String? ?? '',
@@ -90,6 +90,40 @@ class MatchJournalService with ChangeNotifier {
   List<MatchEntry> get favoriteEntries =>
       _entries.where((e) => e.isFavorite && e.isAttended).toList();
 
+  static String normalizeSport(String s) {
+    final lower = s.trim().toLowerCase();
+    switch (lower) {
+      case '\u0444\u0443\u0442\u0431\u043e\u043b':
+      case 'football':
+      case 'soccer':
+        return 'Football';
+      case '\u0445\u043e\u043a\u043a\u0435\u0439':
+      case 'hockey':
+        return 'Hockey';
+      case '\u0431\u0430\u0441\u043a\u0435\u0442\u0431\u043e\u043b':
+      case 'basketball':
+        return 'Basketball';
+      case '\u0442\u0435\u043d\u043d\u0438\u0441':
+      case 'tennis':
+        return 'Tennis';
+      case '\u0432\u043e\u043b\u0435\u0439\u0431\u043e\u043b':
+      case 'volleyball':
+        return 'Volleyball';
+      case '\u0440\u0435\u0433\u0431\u0438':
+      case 'rugby':
+        return 'Rugby';
+      case '\u0431\u0435\u0439\u0441\u0431\u043e\u043b':
+      case 'baseball':
+        return 'Baseball';
+      case '\u0431\u043e\u043a\u0441':
+      case 'boxing':
+        return 'Boxing';
+      default:
+        if (s.isEmpty) return 'Football';
+        return s[0].toUpperCase() + s.substring(1);
+    }
+  }
+
   Future<void> init() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -98,7 +132,52 @@ class MatchJournalService with ChangeNotifier {
 
       if (raw != null && raw.isNotEmpty) {
         final List<dynamic> list = json.decode(raw);
-        _entries.addAll(list.map((e) => MatchEntry.fromJson(e as Map<String, dynamic>)));
+        for (final item in list) {
+          final map = item as Map<String, dynamic>;
+          final id = map['id'] as String? ?? '';
+
+          // If legacy Russian initial entries exist, replace them with 100% English entries
+          if (id == 'm_1') {
+            _entries.add(const MatchEntry(
+              id: 'm_1',
+              sport: 'Football',
+              participants: 'Arsenal vs Chelsea',
+              date: '2026-10-15',
+              place: 'Emirates Stadium',
+              score: '2 : 1',
+              notes: 'Incredible atmosphere! Winning goal in the 88th minute.',
+              isAttended: true,
+              isFavorite: true,
+            ));
+          } else if (id == 'm_2') {
+            _entries.add(const MatchEntry(
+              id: 'm_2',
+              sport: 'Hockey',
+              participants: 'Maple Leafs vs Bruins',
+              date: '2026-10-22',
+              place: 'Scotiabank Arena',
+              score: '3 : 2 (OT)',
+              notes: 'Great overtime period, intense physical game.',
+              isAttended: true,
+              isFavorite: false,
+            ));
+          } else if (id == 'm_3') {
+            _entries.add(const MatchEntry(
+              id: 'm_3',
+              sport: 'Basketball',
+              participants: 'Lakers vs Celtics',
+              date: '2026-11-05',
+              place: 'Crypto.com Arena',
+              score: null,
+              notes: 'Section A3, row 12, great court view.',
+              isAttended: false,
+              isFavorite: false,
+            ));
+          } else {
+            _entries.add(MatchEntry.fromJson(map));
+          }
+        }
+        await _save(); // Overwrite cached storage with English data
       } else {
         // Sample entries
         _entries.addAll([
@@ -191,4 +270,3 @@ class MatchJournalService with ChangeNotifier {
     }
   }
 }
-
