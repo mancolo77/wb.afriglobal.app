@@ -222,29 +222,35 @@ class _CalendarTabState extends State<CalendarTab> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Календарь',
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.textMain,
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Календарь',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.textMain,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        'Планы посещений и архив по датам',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppTheme.textSecondary,
+                        SizedBox(height: 2),
+                        Text(
+                          'Планы посещений и архив по датам',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppTheme.textSecondary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primary,
@@ -253,13 +259,14 @@ class _CalendarTabState extends State<CalendarTab> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppTheme.buttonRadius),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      minimumSize: const Size(0, 40),
                     ),
                     onPressed: _showAddPlannedDialog,
                     icon: const Icon(Icons.add_alarm_rounded, size: 18),
                     label: const Text(
                       'Запланировать',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                   ),
                 ],
@@ -269,8 +276,10 @@ class _CalendarTabState extends State<CalendarTab> {
             // Filter Chips
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              child: Row(
-                children: ['Все', 'Запланировано', 'Посещено'].map((status) {
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: ['Все', 'Запланировано', 'Посещено'].map((status) {
                   final isSelected = _filterStatus == status;
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
@@ -298,6 +307,7 @@ class _CalendarTabState extends State<CalendarTab> {
                     ),
                   );
                 }).toList(),
+                ),
               ),
             ),
             const SizedBox(height: 10),

@@ -88,7 +88,7 @@ class LocalNotificationService {
 
     // 2. Configure Android and iOS initialization settings
     const AndroidInitializationSettings androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/launcher_icon');
 
     const DarwinInitializationSettings iosSettings =
         DarwinInitializationSettings(
@@ -281,7 +281,8 @@ class LocalNotificationService {
         channelDescription: channelDescription,
         importance: Importance.max,
         priority: Priority.high,
-        icon: '@mipmap/ic_launcher',
+        icon: '@mipmap/launcher_icon',
+        largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
       ),
       iOS: DarwinNotificationDetails(),
     );
@@ -310,7 +311,8 @@ class LocalNotificationService {
         channelDescription: channelDescription,
         importance: Importance.max,
         priority: Priority.high,
-        icon: '@mipmap/ic_launcher',
+        icon: '@mipmap/launcher_icon',
+        largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
       ),
       iOS: DarwinNotificationDetails(),
     );
