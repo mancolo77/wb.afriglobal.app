@@ -1,4 +1,4 @@
-package mel.melele.ru
+package wb.afriglobal.app
 
 import io.flutter.embedding.android.FlutterActivity
 
